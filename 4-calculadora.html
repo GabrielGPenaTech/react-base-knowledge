@@ -147,7 +147,6 @@
             )
         }
 
-
         function CalculatorDisplay({ operation, result }) {
             return (
                 <div className="flex flex-col gap-2 px-[1.375rem] select-none">
@@ -167,45 +166,13 @@
             )
         }
 
-        function Calculator() {
+
+        function useCalculator() {
             const [operation, setOperation] = React.useState('')
             const [result, setResult] = React.useState('')
             const { updateHistory } = React.useContext(CalculatorContext)
 
-
-            const buttons = [
-                [
-                    { input: "CE" },
-                    { input: "C", className: "flex-1  h-16" },
-                    { input: "/", variant: "primary" }
-                ],
-                [
-                    { input: "7" },
-                    { input: "8" },
-                    { input: "9" },
-                    { input: "*", variant: "primary" }
-                ],
-                [
-                    { input: "4" },
-                    { input: "5" },
-                    { input: "6" },
-                    { input: "-", variant: "primary" }
-                ],
-                [
-                    { input: "1" },
-                    { input: "2" },
-                    { input: "3" },
-                    { input: "+", variant: "primary" }
-                ],
-                [
-                    { input: "0", className: "flex-1  h-16" }, ,
-                    { input: "," },
-                    { input: "=", className: "w-16 h-16 bg-[#7F45E2]" }
-                ]
-            ]
-
-            function handleClick(input) {
-
+            function doCalculator(input) {
                 if (input === "C") {
                     setOperation("")
                     setResult("")
@@ -242,6 +209,51 @@
                 setOperation(
                     `${operation}${input}`
                 )
+            }
+
+            return {
+                operation,
+                result,
+                doCalculator
+            }
+        }
+
+        function Calculator() {
+            const { operation, result, doCalculator } = useCalculator()
+
+            const buttons = [
+                [
+                    { input: "CE" },
+                    { input: "C", className: "flex-1  h-16" },
+                    { input: "/", variant: "primary" }
+                ],
+                [
+                    { input: "7" },
+                    { input: "8" },
+                    { input: "9" },
+                    { input: "*", variant: "primary" }
+                ],
+                [
+                    { input: "4" },
+                    { input: "5" },
+                    { input: "6" },
+                    { input: "-", variant: "primary" }
+                ],
+                [
+                    { input: "1" },
+                    { input: "2" },
+                    { input: "3" },
+                    { input: "+", variant: "primary" }
+                ],
+                [
+                    { input: "0", className: "flex-1  h-16" }, ,
+                    { input: "," },
+                    { input: "=", className: "w-16 h-16 bg-[#7F45E2]" }
+                ]
+            ]
+
+            function handleClick(input) {
+                doCalculator(input)
             }
 
             return (
