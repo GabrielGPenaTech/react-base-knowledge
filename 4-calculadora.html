@@ -120,15 +120,27 @@
 
         function CalculatorProvider({children}) {
             const [history, setHistory] = React.useState([])
+            const historyStorageKey = 'history'
 
             function updateHistory(operation, parsedResult) {
                 const result = `${operation}=${parsedResult}`
-                setHistory(prevState => [...prevState, result])
+                setHistory(prevState => {
+                    const updateHistory = [...prevState, result]
+
+                    localStorage.setItem(historyStorageKey, JSON.stringify(updateHistory))
+
+                    return updateHistory
+                })
             }
+            
+            React.useEffect(() => {
+                const storage = JSON.parse(localStorage.getItem(historyStorageKey)) || []
+                setHistory(storage)
+            }, [])
 
             return (
                 <CalculatorContext.Provider
-                    value={{history, updateHistory}}
+                    value={{history, updateHistory, historyStorageKey}}
                 >
                     {children}
                 </CalculatorContext.Provider>
